@@ -1,0 +1,5 @@
+1. All "simple" commands will be represented by processes. They can thus also communicate to each other via PIPES. Well, they communicate to the parent process via pipes. 
+
+2. Include environment variables
+
+3. Using Yacc and Lex - ancient / system level parser constructor tools.  
