@@ -31,8 +31,10 @@ shell: shell commandLine
 
 commandLine :	commandEntry '\n'	{
 		    			//execute the command; pass the command to some other func; 
-					AppendEntry(commandTable, $1);
-    					}
+					    //$1 is the value (the actual command table entry)
+		   			    executeCommand($1); 
+		    			AppendEntry(commandTable, $1);
+    				}
 		| '\n'
 		;
 

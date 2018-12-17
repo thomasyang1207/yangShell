@@ -44,8 +44,26 @@ int main() {
     AppendEntry(globalTable, testEntry);
 
     PrintCommandTable(globalTable);
-
+    ClearAndDeleteCommandTable(globalTable);
     printf("Test 2: success!\n");
+    
+    /**************************************************************/
+    
+    //Test3
+    globalTable = MakeCommandTable(3);
+    testWord = strdup("mkdir");
+    testEntry = MakeCommandTableEntry(testWord);
+    testWord = strdup("bruh");
+    wordArgContainer = MakeCommandArgumentFromWord(testWord);
+    AddCommandArgument(testEntry, wordArgContainer);
+    AppendEntry(globalTable, testEntry); 
+    
+    for(int i = 0; i < globalTable->maxSize; i++){
+        CommandTableEntry * cEnt;
+        if((cEnt = globalTable->commandArray[i]) != NULL){
+            executeCommand(cEnt);
+        }
+    }
 
     return 0;
 }

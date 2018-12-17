@@ -36,6 +36,7 @@ CommandTableEntry * MakeCommandTableEntry(char * command) {
     newEntry = (CommandTableEntry *)malloc(sizeof(CommandTableEntry));
     newEntry->command = command;
     newEntry->args = NULL;
+    newEntry->numArgs = 0;
 
     return newEntry;
 }
@@ -43,14 +44,15 @@ CommandTableEntry * MakeCommandTableEntry(char * command) {
 void AddCommandArgument(CommandTableEntry * tableEntry, CommandArgument * argument){
     CommandArgument * curArg;
     if(tableEntry->args == NULL){
-	tableEntry->args = argument;
+	    tableEntry->args = argument;
     } else {
-	curArg = tableEntry->args;
-	while(curArg->nextArgument != NULL){
-	    curArg = curArg->nextArgument;
-	}
-	curArg->nextArgument = argument;
+	    curArg = tableEntry->args;
+	    while(curArg->nextArgument != NULL){
+	        curArg = curArg->nextArgument;
+	    }
+	    curArg->nextArgument = argument;
     }
+    tableEntry->numArgs++;
 }
 
 void ClearAndDeleteCommandTableEntry(CommandTableEntry * tableEntry){
@@ -80,11 +82,11 @@ CommandTable * MakeCommandTable(size_t maxSize){
 
 void AppendEntry(CommandTable * table, CommandTableEntry * tableEntry) {
     if(table->ind >= table->maxSize){
-	table->ind = 0;
+	    table->ind = 0;
     }
     
     if(table->commandArray[table->ind] != NULL) {
-	ClearAndDeleteCommandTableEntry(table->commandArray[table->ind]);
+	    ClearAndDeleteCommandTableEntry(table->commandArray[table->ind]);
     }
 
     table->commandArray[table->ind] = tableEntry;
@@ -94,10 +96,10 @@ void AppendEntry(CommandTable * table, CommandTableEntry * tableEntry) {
 void ClearAndDeleteCommandTable(CommandTable * table){
     size_t i;
     for(i = 0; i < table->maxSize; i++){
-	if(table->commandArray[i] != NULL){
-	    ClearAndDeleteCommandTableEntry(table->commandArray[i]);
-	    table->commandArray[i] = NULL;
-	}
+	    if(table->commandArray[i] != NULL){
+	        ClearAndDeleteCommandTableEntry(table->commandArray[i]);
+	        table->commandArray[i] = NULL;
+	    }
     }	
     free(table);
 }
@@ -110,13 +112,48 @@ CommandTableEntry * AccessCommandTableEntry(CommandTable * table, size_t ind) {
 void PrintCommandTable(CommandTable * table) {
     size_t i;
     for(i = 0; i < table->maxSize; i++){
-	//DO print only if table is NOT empty!!
-	if(table->commandArray[i] != NULL){
-	    printf("Command: %s \n", table->commandArray[i]->command);
-	}
+	    //DO print only if table is NOT empty!!
+	    if(table->commandArray[i] != NULL){
+	        printf("Command: %s \n", table->commandArray[i]->command);
+	    }
     }
 }
 
+
+
+void executeCommand(CommandTableEntry * commandEntry){
+    //
+    int pid; 
+    if((pid = fork()) == 0){
+        //load the command attirbutes into execv. 
+        
+        //allocate space for an argv array;
+        int argc = commandEntry->numArgs + 1;
+        char ** argv = (char **) calloc(argc + 1, sizeof(char *));
+        CommandArgument * cArg = commandEntry->args;
+        
+        for(int i = 1; i < argc; i++){
+            char * thisArg = cArg->data.word;
+            
+            if(cArg->isNumber){
+                sprintf(thisArg, "%li", cArg->data.number);
+            }
+            
+            argv[i] = thisArg;
+            cArg = cArg -> nextArgument;
+        }
+        
+        //get path to program
+        int pathLength = 5 + strlen(commandEntry->command) + 1;
+        char * path = (char *)calloc(pathLength, sizeof(char));
+        sprintf(path, "/bin/%s", commandEntry->command);
+        
+        argv[0] = path;
+        execv(path, argv);
+        exit(1); // exit code during failure...
+    }
+    while(pid != wait(0)); //wait for the process to end... 
+}
 
 
 

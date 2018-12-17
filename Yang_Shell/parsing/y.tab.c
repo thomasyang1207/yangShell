@@ -443,7 +443,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    28,    28,    29,    32,    37,    40,    44,    49,    53
+       0,    28,    28,    29,    32,    38,    41,    45,    50,    54
 };
 #endif
 
@@ -1214,47 +1214,48 @@ yyreduce:
         case 4:
 #line 32 "yang.y" /* yacc.c:1646  */
     {
-					AppendEntry(commandTable, (yyvsp[-1].cEntry));
-					printf("current command table looks like this: \n");
-					PrintCommandTable(commandTable);	
-    					}
-#line 1222 "y.tab.c" /* yacc.c:1646  */
+		    			//execute the command; pass the command to some other func; 
+					    //$1 is the value (the actual command table entry)
+		   			    executeCommand((yyvsp[-1].cEntry)); 
+		    			AppendEntry(commandTable, (yyvsp[-1].cEntry));
+    				}
+#line 1223 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 40 "yang.y" /* yacc.c:1646  */
+#line 41 "yang.y" /* yacc.c:1646  */
     {
 				(yyval.cEntry) = MakeCommandTableEntry((yyvsp[0].sValue));
     			}
-#line 1230 "y.tab.c" /* yacc.c:1646  */
+#line 1231 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 44 "yang.y" /* yacc.c:1646  */
+#line 45 "yang.y" /* yacc.c:1646  */
     {
 				AddCommandArgument((yyvsp[-1].cEntry), (yyvsp[0].cArg));
 		}
-#line 1238 "y.tab.c" /* yacc.c:1646  */
+#line 1239 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 49 "yang.y" /* yacc.c:1646  */
+#line 50 "yang.y" /* yacc.c:1646  */
     {
     				(yyval.cArg) = MakeCommandArgumentFromWord((yyvsp[0].sValue));
     			}
-#line 1246 "y.tab.c" /* yacc.c:1646  */
+#line 1247 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 53 "yang.y" /* yacc.c:1646  */
+#line 54 "yang.y" /* yacc.c:1646  */
     {
 				(yyval.cArg) = MakeCommandArgumentFromInt((yyvsp[0].iValue));
 		    	}
-#line 1254 "y.tab.c" /* yacc.c:1646  */
+#line 1255 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1258 "y.tab.c" /* yacc.c:1646  */
+#line 1259 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1482,7 +1483,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 58 "yang.y" /* yacc.c:1906  */
+#line 59 "yang.y" /* yacc.c:1906  */
 
 
 void yyerror(char * s){

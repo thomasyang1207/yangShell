@@ -1,5 +1,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string.h>
 #ifndef COMMANDTABLE_H
 #define COMMANDTABLE_H
 // How to structure a command table? 
@@ -9,8 +13,8 @@
 struct CommandArgument {
     //allows us to use numbers or words; 
     union {
-	char * word;
-	long number;
+	    char * word;
+	    long number;
     } data; 
     struct CommandArgument * nextArgument;
     bool isNumber;
@@ -20,16 +24,17 @@ typedef struct CommandArgument CommandArgument;
 
 struct CommandTableEntry {
     char * command; 
-    CommandArgument * args; 
+    CommandArgument * args;
+    size_t numArgs;
 };
 
 typedef struct CommandTableEntry CommandTableEntry; 
 
 struct CommandTable {
     //List of CommandTableEntries? 
-    CommandTableEntry ** commandArray;
+    CommandTableEntry ** commandArray; //array of commandEntries
     size_t maxSize;
-    size_t ind;
+    size_t ind; //index marks the head of the CTable... we overwrite the older entries if exceeding the command table..
 };
 
 typedef struct CommandTable CommandTable;
@@ -58,6 +63,8 @@ void ClearAndDeleteCommandTable(CommandTable * table);
 CommandTableEntry * AccessCommandTableEntry(CommandTable * table, size_t ind);
 
 void PrintCommandTable(CommandTable * table);
+
+void executeCommand(CommandTableEntry * commandEntry);
 
 
 #endif 
