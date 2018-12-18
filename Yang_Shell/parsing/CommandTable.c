@@ -119,8 +119,6 @@ void PrintCommandTable(CommandTable * table) {
     }
 }
 
-
-
 void executeCommand(CommandTableEntry * commandEntry){
     //
     int pid; 

@@ -22,7 +22,7 @@ void yyerror(char *);
 		return INTEGER;
 		}
 
-[a-zA-Z][a-zA-Z0-9]*	{
+\"*[a-zA-Z][a-zA-Z0-9]*\.*[a-zA-Z][a-zA-Z0-9]*\"*  {
 	yylval.sValue = strdup(yytext);
 	return WORD;
 	}

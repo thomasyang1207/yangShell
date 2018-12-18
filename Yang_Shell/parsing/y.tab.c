@@ -443,7 +443,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    28,    28,    29,    32,    38,    41,    45,    50,    54
+       0,    28,    28,    29,    32,    39,    44,    48,    53,    57
 };
 #endif
 
@@ -1218,44 +1218,53 @@ yyreduce:
 					    //$1 is the value (the actual command table entry)
 		   			    executeCommand((yyvsp[-1].cEntry)); 
 		    			AppendEntry(commandTable, (yyvsp[-1].cEntry));
+		    			printf("Yang >> ");
     				}
-#line 1223 "y.tab.c" /* yacc.c:1646  */
+#line 1224 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 39 "yang.y" /* yacc.c:1646  */
+    {
+		            printf("Yang >> ");
+		        }
+#line 1232 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 41 "yang.y" /* yacc.c:1646  */
+#line 44 "yang.y" /* yacc.c:1646  */
     {
 				(yyval.cEntry) = MakeCommandTableEntry((yyvsp[0].sValue));
     			}
-#line 1231 "y.tab.c" /* yacc.c:1646  */
+#line 1240 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 45 "yang.y" /* yacc.c:1646  */
+#line 48 "yang.y" /* yacc.c:1646  */
     {
 				AddCommandArgument((yyvsp[-1].cEntry), (yyvsp[0].cArg));
 		}
-#line 1239 "y.tab.c" /* yacc.c:1646  */
+#line 1248 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 50 "yang.y" /* yacc.c:1646  */
+#line 53 "yang.y" /* yacc.c:1646  */
     {
     				(yyval.cArg) = MakeCommandArgumentFromWord((yyvsp[0].sValue));
     			}
-#line 1247 "y.tab.c" /* yacc.c:1646  */
+#line 1256 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 54 "yang.y" /* yacc.c:1646  */
+#line 57 "yang.y" /* yacc.c:1646  */
     {
 				(yyval.cArg) = MakeCommandArgumentFromInt((yyvsp[0].iValue));
 		    	}
-#line 1255 "y.tab.c" /* yacc.c:1646  */
+#line 1264 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1259 "y.tab.c" /* yacc.c:1646  */
+#line 1268 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1483,7 +1492,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 59 "yang.y" /* yacc.c:1906  */
+#line 62 "yang.y" /* yacc.c:1906  */
 
 
 void yyerror(char * s){
@@ -1492,7 +1501,9 @@ void yyerror(char * s){
 
 int main(void) {
 	commandTable = MakeCommandTable(20); // initializes the list; 
+	printf("Yang >> ");
 	yyparse();
+	printf("\n");
 	free(commandTable);
 	return 0;
 }

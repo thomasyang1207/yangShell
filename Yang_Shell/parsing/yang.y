@@ -34,8 +34,11 @@ commandLine :	commandEntry '\n'	{
 					    //$1 is the value (the actual command table entry)
 		   			    executeCommand($1); 
 		    			AppendEntry(commandTable, $1);
+		    			printf("Yang >> ");
     				}
-		| '\n'
+		| '\n'  {
+		            printf("Yang >> ");
+		        }
 		;
 
 commandEntry:	WORD	{
@@ -64,7 +67,9 @@ void yyerror(char * s){
 
 int main(void) {
 	commandTable = MakeCommandTable(20); // initializes the list; 
+	printf("Yang >> ");
 	yyparse();
+	printf("\n");
 	free(commandTable);
 	return 0;
 }
