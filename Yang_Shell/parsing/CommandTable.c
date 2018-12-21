@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <limits.h>
 #include "CommandTable.h"
 
 CommandArgument * MakeCommandArgumentFromWord(char * s){
@@ -121,10 +123,28 @@ void PrintCommandTable(CommandTable * table) {
 
 void executeCommand(CommandTableEntry * commandEntry){
     //
+    if (strcmp(commandEntry->command, "dt") == 0){
+        PrintCommandTable(commandTable);
+        return;
+    }
+    
+    if (strcmp(commandEntry->command, "cd") == 0){
+        char * dir;
+        if(commandEntry->args == NULL){
+            dir = (char*)calloc(2, sizeof(char));
+            sprintf(dir, "/");
+        } else {
+            size_t dirLen = strlen(commandEntry->args->data.word);
+            dir = (char*)calloc(dirLen + 1, sizeof(char));
+            sprintf(dir, "%s", commandEntry->args->data.word);
+        }
+        chdir(dir);
+        free(dir);
+        return;
+    }
+    
     int pid; 
     if((pid = fork()) == 0){
-        //load the command attirbutes into execv. 
-        
         //allocate space for an argv array;
         int argc = commandEntry->numArgs + 1;
         char ** argv = (char **) calloc(argc + 1, sizeof(char *));
@@ -148,10 +168,33 @@ void executeCommand(CommandTableEntry * commandEntry){
         
         argv[0] = path;
         execv(path, argv);
+        
+        //if still here, then try to execute from etc
+        pathLength += 4;
+        free(path);
+        path = (char *)calloc(pathLength, sizeof(char));
+        sprintf(path, "/usr/bin/%s", commandEntry->command);
+        execv(path, argv);
+        
+        printf("Invalid command %s. Check if you've spelled everything correctly\n", commandEntry->command);
+        free(path);
+        free(argv);
         exit(1); // exit code during failure...
-    }
-    while(pid != wait(0)); //wait for the process to end... 
+    } 
+    while(pid != wait(0)); //wait for the process to end...
+
 }
+
+void printPrompt(void) {
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Yang(%s) >> ", cwd);
+    } else {
+        perror("getcwd() error");
+        return;
+    }
+   return;
+};
 
 
 

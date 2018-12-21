@@ -66,5 +66,7 @@ void PrintCommandTable(CommandTable * table);
 
 void executeCommand(CommandTableEntry * commandEntry);
 
+void printPrompt(void);
 
+CommandTable * commandTable;
 #endif 

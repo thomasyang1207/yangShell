@@ -1,7 +1,7 @@
 /* lexer file */
 
 %{
-
+#include <unistd.h>
 #include <stdio.h>
 #include "CommandTable.h"
 #include "y.tab.h"
@@ -22,10 +22,17 @@ void yyerror(char *);
 		return INTEGER;
 		}
 
-\"*[a-zA-Z][a-zA-Z0-9]*\.*[a-zA-Z][a-zA-Z0-9]*\"*  {
+-*\"*[a-zA-Z][_a-zA-Z0-9\.]*\.*[a-zA-Z]*[a-zA-Z0-9]*\"*  {
 	yylval.sValue = strdup(yytext);
 	return WORD;
 	}
+
+\.*  {
+	yylval.sValue = strdup(yytext);
+	return WORD;
+	}
+
+
 
 \n 	return *yytext;
 

@@ -64,6 +64,7 @@
 /* Copy the first part of user declarations.  */
 #line 1 "yang.y" /* yacc.c:339  */
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "wordListNode.h"
@@ -74,7 +75,7 @@ void yyerror(char * s);
 CommandTable * commandTable;
 
 
-#line 78 "y.tab.c" /* yacc.c:339  */
+#line 79 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -122,14 +123,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "yang.y" /* yacc.c:355  */
+#line 14 "yang.y" /* yacc.c:355  */
 
 	long iValue;
 	char * sValue;
 	CommandArgument * cArg;
 	CommandTableEntry * cEntry;
 
-#line 133 "y.tab.c" /* yacc.c:355  */
+#line 134 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -146,7 +147,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 150 "y.tab.c" /* yacc.c:358  */
+#line 151 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -443,7 +444,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    28,    28,    29,    32,    39,    44,    48,    53,    57
+       0,    29,    29,    30,    33,    40,    45,    49,    54,    58
 };
 #endif
 
@@ -1212,59 +1213,59 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 32 "yang.y" /* yacc.c:1646  */
+#line 33 "yang.y" /* yacc.c:1646  */
     {
 		    			//execute the command; pass the command to some other func; 
 					    //$1 is the value (the actual command table entry)
 		   			    executeCommand((yyvsp[-1].cEntry)); 
 		    			AppendEntry(commandTable, (yyvsp[-1].cEntry));
-		    			printf("Yang >> ");
+		    			printPrompt();
     				}
-#line 1224 "y.tab.c" /* yacc.c:1646  */
+#line 1225 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 39 "yang.y" /* yacc.c:1646  */
+#line 40 "yang.y" /* yacc.c:1646  */
     {
-		            printf("Yang >> ");
+		            printPrompt();
 		        }
-#line 1232 "y.tab.c" /* yacc.c:1646  */
+#line 1233 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 44 "yang.y" /* yacc.c:1646  */
+#line 45 "yang.y" /* yacc.c:1646  */
     {
 				(yyval.cEntry) = MakeCommandTableEntry((yyvsp[0].sValue));
     			}
-#line 1240 "y.tab.c" /* yacc.c:1646  */
+#line 1241 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 48 "yang.y" /* yacc.c:1646  */
+#line 49 "yang.y" /* yacc.c:1646  */
     {
 				AddCommandArgument((yyvsp[-1].cEntry), (yyvsp[0].cArg));
 		}
-#line 1248 "y.tab.c" /* yacc.c:1646  */
+#line 1249 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 53 "yang.y" /* yacc.c:1646  */
+#line 54 "yang.y" /* yacc.c:1646  */
     {
     				(yyval.cArg) = MakeCommandArgumentFromWord((yyvsp[0].sValue));
     			}
-#line 1256 "y.tab.c" /* yacc.c:1646  */
+#line 1257 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 57 "yang.y" /* yacc.c:1646  */
+#line 58 "yang.y" /* yacc.c:1646  */
     {
 				(yyval.cArg) = MakeCommandArgumentFromInt((yyvsp[0].iValue));
 		    	}
-#line 1264 "y.tab.c" /* yacc.c:1646  */
+#line 1265 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1268 "y.tab.c" /* yacc.c:1646  */
+#line 1269 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1492,7 +1493,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 62 "yang.y" /* yacc.c:1906  */
+#line 63 "yang.y" /* yacc.c:1906  */
 
 
 void yyerror(char * s){
@@ -1501,7 +1502,7 @@ void yyerror(char * s){
 
 int main(void) {
 	commandTable = MakeCommandTable(20); // initializes the list; 
-	printf("Yang >> ");
+	printPrompt();
 	yyparse();
 	printf("\n");
 	free(commandTable);
